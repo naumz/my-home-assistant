@@ -1,0 +1,143 @@
+- id: '1588671360892'
+  alias: Play Adhan
+  description: Play adhan for all prayers except Fajr
+  trigger:
+  - platform: template
+    value_template: '{{ as_timestamp(states(''sensor.date_time_iso'')) == as_timestamp(states(''sensor.dhuhr_prayer''))
+      }}'
+  - platform: template
+    value_template: '{{ as_timestamp(states(''sensor.date_time_iso'')) == as_timestamp(states(''sensor.asr_prayer''))
+      }}'
+  - platform: template
+    value_template: '{{ as_timestamp(states(''sensor.date_time_iso'')) == as_timestamp(states(''sensor.maghrib_prayer''))
+      }}'
+  - platform: template
+    value_template: '{{ as_timestamp(states(''sensor.date_time_iso'')) == as_timestamp(states(''sensor.isha_prayer''))
+      }}'
+  condition:
+  - condition: state
+    entity_id: input_boolean.adhan
+    state: 'on'
+  action:
+  - data:
+      is_volume_muted: true
+    entity_id: media_player.living_room_tv
+    service: media_player.volume_mute
+  - entity_id: media_player.living_room_tv
+    service_template: "{% if states('media_player.living_room_tv') != 'standby' %}\n\
+      \  media_player.media_play_pause\n{% else %}\n  script.noop\n{% endif %}\n"
+  - data_template:
+      volume_level: '{{''0.4'' if now().hour >= 21 else ''0.6''}}'
+    entity_id: media_player.bedroom_speaker
+    service: media_player.volume_set
+  - data:
+      entity_id: media_player.bedroom_speaker
+      media_content_id: https://www.youtube.com/watch?v=MaEzj5eRmjc
+      media_content_type: music
+    service: media_extractor.play_media
+  - data:
+      is_volume_muted: false
+    entity_id: media_player.bedroom_speaker
+    service: media_player.volume_mute
+  - delay: 00:03:25
+  - data:
+      volume_level: '0.4'
+    entity_id: media_player.bedroom_speaker
+    service: media_player.volume_set
+  - delay: 00:00:10
+  - entity_id: media_player.living_room_tv
+    service_template: "{% if states('media_player.living_room_tv') != 'standby' %}\n\
+      \  media_player.media_play_pause\n{% else %}\n  script.noop\n{% endif %}\n"
+  - data: {}
+    entity_id: media_player.living_room_tv
+    service: media_player.volume_up
+- id: '1588671536326'
+  alias: Play Fajr Adhan
+  description: Plays Fajr Adhan
+  trigger:
+  - platform: template
+    value_template: '{{ as_timestamp(states(''sensor.date_time_iso'')) == as_timestamp(states(''sensor.fajr_prayer''))
+      }}'
+  condition:
+  - condition: state
+    entity_id: input_boolean.adhan
+    state: 'on'
+  action:
+  - data:
+      is_volume_muted: false
+    entity_id: media_player.bedroom_speaker
+    service: media_player.volume_mute
+  - data:
+      volume_level: '0.2'
+    entity_id: media_player.bedroom_speaker
+    service: media_player.volume_set
+  - data:
+      entity_id: media_player.bedroom_speaker
+      media_content_id: https://www.youtube.com/watch?v=bFaIHrol5ck
+      media_content_type: music
+    service: media_extractor.play_media
+  - delay: 00:03:08
+  - data:
+      volume_level: '0.4'
+    entity_id: media_player.bedroom_speaker
+    service: media_player.volume_set
+- id: '1588730451996'
+  alias: Lights before sunset
+  description: Turn lights on before sunset
+  trigger:
+  - event: sunset
+    offset: -00:20:00
+    platform: sun
+  condition:
+  - condition: zone
+    entity_id: person.naumaan
+    zone: zone.home
+  action:
+  - data: {}
+    entity_id: switch.00204015c44f33919c70
+    service: switch.turn_on
+  - data: {}
+    entity_id: switch.living_room_lamp
+    service: switch.turn_on
+- id: '1588734174406'
+  alias: Lights after sunrise
+  description: Turn off lights after sunrise
+  trigger:
+  - event: sunrise
+    platform: sun
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.00204015c44f33919c70
+    service: switch.turn_off
+  - data: {}
+    entity_id: switch.living_room_lamp
+    service: switch.turn_off
+- id: '1588914814098'
+  alias: No late night Adhan
+  description: Don't play Adhan late in the night
+  trigger:
+  - at: '22:00:00'
+    platform: time
+  - at: 04:00:00
+    platform: time
+  condition: []
+  action:
+  - entity_id: input_boolean.adhan
+    service_template: '{{''input_boolean.turn_off'' if trigger.now.hour >= 22 else
+      ''input_boolean.turn_on''}}
+
+      '
+- id: '1588917635772'
+  alias: Alarm when leaving
+  description: Alarm house when empty
+  trigger:
+  - entity_id: group.family
+    from: home
+    platform: state
+  condition: []
+  action:
+  - data_template:
+      message: '{{trigger.now}}'
+    entity_id: alarm_control_panel.alexa_guard_54095
+    service: alarm_control_panel.alarm_arm_away
