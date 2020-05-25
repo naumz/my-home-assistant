@@ -1,0 +1,319 @@
+# this yaml is just a copy and may not be in sync with the actual view.
+title: Overview
+views:
+  - cards:
+      - elements:
+          - entity: sun.sun
+            style:
+              color: black
+              left: 50%
+              top: 20%
+            type: state-badge
+          - entity: sensor.time
+            style:
+              color: black
+              font-size: 72px
+              left: 50%
+              top: 50%
+            type: state-label
+          - entity: sensor.date
+            style:
+              color: black
+              font-size: 32px
+              left: 50%
+              top: 80%
+            type: state-label
+        image: /local/white_very_small.jpg
+        type: picture-elements
+      - entities:
+          - entity: sensor.fajr_prayer
+            format: time
+            icon: 'mdi:weather-sunset-up'
+            name: Fajr
+          - entity: sensor.dhuhr_prayer
+            format: time
+            icon: 'mdi:weather-sunny'
+            name: Dhuhr
+          - entity: sensor.asr_prayer
+            format: time
+            icon: 'mdi:weather-sunny-alert'
+            name: Asr
+          - entity: sensor.maghrib_prayer
+            format: time
+            icon: 'mdi:weather-sunset-down'
+            name: Maghrib
+          - entity: sensor.isha_prayer
+            format: time
+            icon: 'mdi:star'
+            name: Isha
+          - entity: input_boolean.adhan
+            name: Play Adhan
+            tap_action:
+              action: toggle
+        title: Prayer Times
+        type: glance
+      - entities:
+          - person.naumaan
+          - person.sameera
+        title: Family
+        type: glance
+      - entity: weather.home
+        type: weather-forecast
+      - entity: alarm_control_panel.alexa_guard_54095
+        type: alarm-panel
+      - entities:
+          - entity: sensor.hacs
+            name: HACS updates
+          - entity: binary_sensor.updater
+            name: Home Assistant updates
+        title: Updates
+        type: entities
+      - entities:
+          - entity: switch.living_room_lamp
+            name: Living Room Lamp
+            tap_action:
+              action: toggle
+          - entity: switch.00204015c44f33919c70
+            name: Bedroom Lamp
+            tap_action:
+              action: toggle
+        title: Lights
+        type: glance
+    path: home
+    title: Home
+  - cards:
+      - cards:
+          - entities:
+              - person.naumaan
+              - person.sameera
+            title: Family
+            type: glance
+          - cards:
+              - entity: sensor.mi_8_lite_geocoded_location
+                name: Location
+                type: sensor
+              - entity: sensor.mi_8_lite_battery_level
+                name: Battery
+                severity:
+                  green: 50
+                  red: 10
+                  yellow: 30
+                type: gauge
+                unit: '%'
+            title: Naumaan
+            type: horizontal-stack
+          - entities:
+              - entity: sensor.mi_8_lite_wifi_connection
+                name: WiFi
+              - attribute: signal_level
+                entity: sensor.mi_8_lite_wifi_connection
+                name: Signal Strength
+                type: attribute
+              - attribute: ip_address
+                entity: sensor.mi_8_lite_wifi_connection
+                name: IP
+                type: attribute
+              - attribute: bssid
+                entity: sensor.mi_8_lite_wifi_connection
+                name: MAC
+                type: attribute
+              - attribute: ip_address
+                entity: sensor.mi_8_lite_wifi_connection
+                name: IP address
+                type: attribute
+            title: Network
+            type: entities
+          - cards:
+              - entity: sensor.sameera_khan_geocoded_location_2
+                name: Location
+                type: sensor
+              - entity: sensor.sameera_khan_battery_level_2
+                name: Battery
+                severity:
+                  green: 50
+                  red: 10
+                  yellow: 30
+                type: gauge
+                unit: '%'
+            title: Sameera
+            type: horizontal-stack
+          - entities:
+              - entity: sensor.sameera_khan_connection_type_2
+                name: Connection
+              - entity: sensor.sameera_khan_ssid_2
+                name: WiFi
+              - entity: sensor.sameera_khan_bssid_2
+                name: MAC
+              - entity: sensor.sameera_khan_sim_1_2
+                name: Mobile network
+            title: Network
+            type: entities
+        type: vertical-stack
+    path: people
+    title: People
+  - cards:
+      - entities:
+          - entity: switch.living_room_lamp
+            name: Living Room Lamp
+          - entity: media_player.living_room_tv
+            name: Living Room TV
+          - entity: media_player.living_room
+            name: Living Room Sonos
+          - entity: media_player.living_room_echo_dot
+            name: Living Room Echo Dot
+          - entity: media_player.living_room_alexa
+            name: Living Room Sonos (Alexa)
+        show_header_toggle: true
+        title: Living Room
+        type: entities
+      - entities:
+          - entity: switch.00204015c44f33919c70
+            name: Bedroom lamp
+          - entity: media_player.bedroom_speaker
+            name: Bedroom Google Home
+        show_header_toggle: true
+        title: Bedroom
+        type: entities
+      - cards:
+          - cards:
+              - entity: sensor.hl_l2395dw_black_toner_remaining
+                name: Toner
+                severity:
+                  green: 40
+                  red: 0
+                  yellow: 20
+                type: gauge
+                unit: '%'
+              - entity: sensor.hl_l2395dw_drum_remaining_life
+                name: Drum
+                severity:
+                  green: 40
+                  red: 0
+                  yellow: 20
+                type: gauge
+                unit: '%'
+              - entity: sensor.hl_l2395dw_status
+                name: Status
+                type: sensor
+              - entity: sensor.hl_l2395dw_page_counter
+                name: Pages
+                type: sensor
+            title: Office Printer
+            type: horizontal-stack
+        type: vertical-stack
+    path: rooms
+    title: Rooms
+  - cards:
+      - entity: media_player.bedroom_speaker
+        name: Bedroom Google Home
+        type: media-control
+      - entity: media_player.living_room_tv
+        name: Living Room TV
+        type: media-control
+      - entity: media_player.living_room
+        name: Living Room Sonos
+        type: media-control
+      - entity: media_player.living_room_echo_dot
+        name: Living Room Echo Dot
+        type: media-control
+      - entity: media_player.living_room_alexa
+        name: Living Room Sonos (Alexa)
+        type: media-control
+    path: media
+    title: Media
+  - cards:
+      - cards:
+          - entity: sensor.disk_use_percent
+            name: Disk usage
+            severity:
+              green: 0
+              red: 80
+              yellow: 50
+            type: gauge
+            unit: '%'
+          - entity: sensor.memory_use_percent
+            name: Memory usage
+            severity:
+              green: 0
+              red: 80
+              yellow: 50
+            type: gauge
+            unit: '%'
+          - entity: sensor.cpu_temperature
+            name: CPU temp
+            type: sensor
+          - entity: sensor.processor_use
+            name: CPU usage
+            severity:
+              green: 0
+              red: 80
+              yellow: 50
+            type: gauge
+            unit: '%'
+        title: System Monitor
+        type: horizontal-stack
+      - entities:
+          - entity: sensor.hacs
+            name: HACS updates
+          - entity: binary_sensor.updater
+            name: Home Assistant updates
+        title: Updates
+        type: entities
+      - cards:
+          - entities:
+              - entity: sensor.network_in_wlan0
+                name: Download
+              - entity: sensor.network_out_wlan0
+                name: Upload
+              - entity: sensor.network_throughput_in_wlan0
+                name: Download Rate
+              - entity: sensor.network_throughput_out_wlan0
+                name: Upload Rate
+              - entity: sensor.ipv4_address_wlan0
+                name: IP
+            title: HA - Network
+            type: entities
+          - cards:
+              - entity: sensor.speedtest_download
+                name: Download
+                severity:
+                  green: 50
+                  red: 0
+                  yellow: 20
+                type: gauge
+              - entity: sensor.speedtest_upload
+                name: Upload
+                severity:
+                  green: 5
+                  red: 0
+                  yellow: 2
+                type: gauge
+              - entity: sensor.speedtest_ping
+                name: Ping
+                severity:
+                  green: 0
+                  red: 200
+                  yellow: 50
+                type: gauge
+              - icon: 'mdi:speedometer'
+                name: Speed test
+                tap_action:
+                  action: call-service
+                  service: speedtestdotnet.speedtest
+                type: button
+            title: Network - Speed
+            type: horizontal-stack
+        type: vertical-stack
+      - entities:
+          - entity: sensor.last_boot
+            name: Last system boot
+          - entity: sensor.uptime
+            hold_action:
+              action: call-service
+              confirmation: true
+              service: homeassistant.restart
+            name: HA uptime
+        title: System Stats
+        type: entities
+    path: system
+    title: System
