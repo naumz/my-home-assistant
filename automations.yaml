@@ -124,10 +124,8 @@
   condition: []
   action:
   - entity_id: input_boolean.adhan
-    service_template: '{{''input_boolean.turn_off'' if trigger.now.hour >= 22 else
-      ''input_boolean.turn_on''}}
-
-      '
+    service_template: '{{''input_boolean.turn_off'' if trigger.now.hour >= 20 else
+      ''input_boolean.turn_on''}}'
 - id: '1588917635772'
   alias: Alarm when leaving
   description: Alarm house when empty
@@ -137,7 +135,17 @@
     platform: state
   condition: []
   action:
-  - data_template:
-      message: '{{trigger.now}}'
-    entity_id: alarm_control_panel.alexa_guard_54095
+  - entity_id: alarm_control_panel.alexa_guard_54095
     service: alarm_control_panel.alarm_arm_away
+- id: '1590640341411'
+  alias: Disarm alarm when arriving
+  description: Disarm alarm when anyone enters home
+  trigger:
+  - entity_id: group.family
+    platform: state
+    to: home
+  condition: []
+  action:
+  - data: {}
+    entity_id: alarm_control_panel.alexa_guard_54095
+    service: alarm_control_panel.alarm_disarm
