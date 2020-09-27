@@ -25,10 +25,10 @@ sensor: !include sensors.yaml
 
 media_extractor:
 
-speedtestdotnet:
-  scan_interval:
-    days: 1
-    hours: 0
+
+
+
+
 
 # not working yet: perhaps look at:
 # https://community.home-assistant.io/t/fixed-ecovacs-deebot-2019-ozmo-series-working-library/126319
